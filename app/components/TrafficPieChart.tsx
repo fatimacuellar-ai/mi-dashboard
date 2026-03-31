@@ -9,14 +9,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import type { PieLabelRenderProps } from "recharts";
-
-const data = [
-  { name: "Búsqueda orgánica", value: 38 },
-  { name: "Directo", value: 25 },
-  { name: "Redes sociales", value: 20 },
-  { name: "Email", value: 10 },
-  { name: "Referidos", value: 7 },
-];
+import type { TrafficPoint } from "../lib/data";
 
 const COLORS = ["#6366f1", "#f59e0b", "#22c55e", "#ec4899", "#14b8a6"];
 
@@ -43,7 +36,7 @@ const renderCustomLabel = (props: PieLabelRenderProps) => {
   );
 };
 
-export default function TrafficPieChart() {
+export default function TrafficPieChart({ data }: { data: TrafficPoint[] }) {
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
       <h2 className="text-lg font-semibold text-gray-800 mb-1">Distribución de Tráfico</h2>

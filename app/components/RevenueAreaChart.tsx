@@ -10,27 +10,13 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import type { RevenuePoint } from "../lib/data";
 
-const data = [
-  { mes: "Ene", ingresos: 18500, gastos: 12000 },
-  { mes: "Feb", ingresos: 22300, gastos: 13500 },
-  { mes: "Mar", ingresos: 20800, gastos: 14200 },
-  { mes: "Abr", ingresos: 27600, gastos: 15000 },
-  { mes: "May", ingresos: 25900, gastos: 14800 },
-  { mes: "Jun", ingresos: 31200, gastos: 16100 },
-  { mes: "Jul", ingresos: 29500, gastos: 15700 },
-  { mes: "Ago", ingresos: 34800, gastos: 17200 },
-  { mes: "Sep", ingresos: 32100, gastos: 16800 },
-  { mes: "Oct", ingresos: 38400, gastos: 18500 },
-  { mes: "Nov", ingresos: 42700, gastos: 19000 },
-  { mes: "Dic", ingresos: 49300, gastos: 21000 },
-];
-
-export default function RevenueAreaChart() {
+export default function RevenueAreaChart({ data }: { data: RevenuePoint[] }) {
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
       <h2 className="text-lg font-semibold text-gray-800 mb-1">Ingresos vs Gastos</h2>
-      <p className="text-sm text-gray-500 mb-5">Comparativa mensual de ingresos y gastos</p>
+      <p className="text-sm text-gray-500 mb-5">Comparativa de ingresos y gastos en el periodo</p>
       <ResponsiveContainer width="100%" height={260}>
         <AreaChart data={data} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
           <defs>
@@ -44,7 +30,7 @@ export default function RevenueAreaChart() {
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-          <XAxis dataKey="mes" tick={{ fontSize: 12, fill: "#6b7280" }} axisLine={false} tickLine={false} />
+          <XAxis dataKey="label" tick={{ fontSize: 12, fill: "#6b7280" }} axisLine={false} tickLine={false} />
           <YAxis tick={{ fontSize: 12, fill: "#6b7280" }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
           <Tooltip
             contentStyle={{ borderRadius: "8px", border: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}
