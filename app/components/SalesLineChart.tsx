@@ -38,7 +38,7 @@ export default function SalesLineChart() {
           <YAxis tick={{ fontSize: 12, fill: "#6b7280" }} axisLine={false} tickLine={false} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
           <Tooltip
             contentStyle={{ borderRadius: "8px", border: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}
-            formatter={(value: number) => [`$${value.toLocaleString()}`, "Ventas"]}
+            formatter={(value) => [`$${Number(value).toLocaleString()}`, "Ventas"]}
           />
           <Legend wrapperStyle={{ fontSize: "13px" }} />
           <Line

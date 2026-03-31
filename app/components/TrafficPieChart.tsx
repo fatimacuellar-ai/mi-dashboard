@@ -8,6 +8,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import type { PieLabelRenderProps } from "recharts";
 
 const data = [
   { name: "Búsqueda orgánica", value: 38 },
@@ -19,24 +20,25 @@ const data = [
 
 const COLORS = ["#6366f1", "#f59e0b", "#22c55e", "#ec4899", "#14b8a6"];
 
-interface CustomLabelProps {
-  cx: number;
-  cy: number;
-  midAngle: number;
-  innerRadius: number;
-  outerRadius: number;
-  percent: number;
-}
+const renderCustomLabel = (props: PieLabelRenderProps) => {
+  const { cx, cy, midAngle, innerRadius, outerRadius, percent } = props;
+  const cxNum = Number(cx ?? 0);
+  const cyNum = Number(cy ?? 0);
+  const midAngleNum = Number(midAngle ?? 0);
+  const innerRadiusNum = Number(innerRadius ?? 0);
+  const outerRadiusNum = Number(outerRadius ?? 0);
+  const percentNum = Number(percent ?? 0);
 
-const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: CustomLabelProps) => {
+  if (percentNum < 0.08) return null;
+
   const RADIAN = Math.PI / 180;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-  if (percent < 0.08) return null;
+  const radius = innerRadiusNum + (outerRadiusNum - innerRadiusNum) * 0.5;
+  const x = cxNum + radius * Math.cos(-midAngleNum * RADIAN);
+  const y = cyNum + radius * Math.sin(-midAngleNum * RADIAN);
+
   return (
     <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={12} fontWeight={600}>
-      {`${(percent * 100).toFixed(0)}%`}
+      {`${(percentNum * 100).toFixed(0)}%`}
     </text>
   );
 };
@@ -63,7 +65,7 @@ export default function TrafficPieChart() {
           </Pie>
           <Tooltip
             contentStyle={{ borderRadius: "8px", border: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}
-            formatter={(value: number) => [`${value}%`, "Porcentaje"]}
+            formatter={(value) => [`${value}%`, "Porcentaje"]}
           />
           <Legend
             wrapperStyle={{ fontSize: "12px", paddingTop: "8px" }}
