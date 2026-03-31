@@ -11,7 +11,12 @@ import {
 import type { PieLabelRenderProps } from "recharts";
 import type { TrafficPoint } from "../lib/data";
 
-const COLORS = ["#6366f1", "#f59e0b", "#22c55e", "#ec4899", "#14b8a6"];
+const COLORS = ["#6366f1", "#f59e0b", "#10b981", "#ec4899", "#14b8a6"];
+
+interface Props {
+  data: TrafficPoint[];
+  dark?: boolean;
+}
 
 const renderCustomLabel = (props: PieLabelRenderProps) => {
   const { cx, cy, midAngle, innerRadius, outerRadius, percent } = props;
@@ -30,38 +35,57 @@ const renderCustomLabel = (props: PieLabelRenderProps) => {
   const y = cyNum + radius * Math.sin(-midAngleNum * RADIAN);
 
   return (
-    <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={12} fontWeight={600}>
+    <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={12} fontWeight={700}>
       {`${(percentNum * 100).toFixed(0)}%`}
     </text>
   );
 };
 
-export default function TrafficPieChart({ data }: { data: TrafficPoint[] }) {
+export default function TrafficPieChart({ data, dark }: Props) {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-      <h2 className="text-lg font-semibold text-gray-800 mb-1">Distribución de Tráfico</h2>
-      <p className="text-sm text-gray-500 mb-5">Fuentes de tráfico al sitio</p>
+    <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6 shadow-sm hover:shadow-md dark:hover:shadow-gray-900 transition-shadow duration-200">
+      <div className="flex items-center gap-3 mb-1">
+        <div className="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-950 flex items-center justify-center">
+          <svg className="w-4 h-4 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+          </svg>
+        </div>
+        <div>
+          <h2 className="text-sm font-semibold text-gray-800 dark:text-gray-100 leading-none">Distribución de Tráfico</h2>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Fuentes de tráfico al sitio</p>
+        </div>
+      </div>
       <ResponsiveContainer width="100%" height={260}>
         <PieChart>
           <Pie
             data={data}
             cx="50%"
-            cy="45%"
-            outerRadius={90}
+            cy="44%"
+            outerRadius={88}
             dataKey="value"
             labelLine={false}
             label={renderCustomLabel}
+            strokeWidth={2}
+            stroke={dark ? "#111827" : "#fff"}
           >
             {data.map((_, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
           <Tooltip
-            contentStyle={{ borderRadius: "8px", border: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}
-            formatter={(value) => [`${value}%`, "Porcentaje"]}
+            contentStyle={{
+              borderRadius: "12px",
+              border: "none",
+              boxShadow: "0 10px 40px rgba(0,0,0,0.15)",
+              background: dark ? "#1f2937" : "#fff",
+              padding: "10px 14px",
+            }}
+            labelStyle={{ color: dark ? "#9ca3af" : "#6b7280", fontWeight: 600, fontSize: 12, marginBottom: 4 }}
+            itemStyle={{ color: dark ? "#e5e7eb" : "#374151", fontSize: 13 }}
+            formatter={(value, name) => [`${value}%`, name]}
           />
           <Legend
-            wrapperStyle={{ fontSize: "12px", paddingTop: "8px" }}
+            wrapperStyle={{ fontSize: "12px", paddingTop: "6px", color: dark ? "#9ca3af" : "#6b7280" }}
             iconType="circle"
             iconSize={8}
           />
